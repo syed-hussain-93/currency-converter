@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<script>
+$(document).ready(function() {
+    const currency_from_el = document.getElementById('currency_from');
+    const currency_to_el = document.getElementById('currency_to');
+    const amount_from_el = document.getElementById('amount_from');
+    const amount_to_el = document.getElementById('amount_to');
+
+    const rate_el = document.getElementById('rate');
+    const swap = document.getElementById('swap');
+
+    currency_from_el.addEventListener('change', convert_currency);
+    currency_to_el.addEventListener('change', convert_currency);
+    amount_from.addEventListener('input', convert_currency);
+    amount_to.addEventListener('input', convert_currency);
+
+    convert_currency();
+
+    swap.addEventListener('click', () => {
+        const temp = currency_from_el.value;
+        currency_from_el.value = currency_to_el.value;
+        currency_to_el.value = temp;
+        convert_currency();
+    })
+    function convert_currency(){
+        const currency_from = currency_from_el.value;
+        const currency_to = currency_to_el.value;
+        
+        fetch(`/currency_rate/${currency_from}/${currency_to}`)
+        .then(response => response.json())
+        .then(data => {
+            const rate = data.Rate;
+            rate_el.innerText = `1 ${currency_from} = ${rate} ${currency_to}`
+            amount_to_el.value = (amount_from_el.value * rate).toFixed(2);
+        })
+    }
+
+});
+</script>
+
+<div id= "amount" class="number input">
+    <label for="Base Currency"> Choose currency and amount:</label><br>
+</div>
+
+<div class="container">
+    <div class="currency">
+        <select id="currency_from">
+            <option value="EUR">EUR</option>
+            <option value="IDR">IDR</option>
+            <option value="BGN">BGN</option>
+            <option value="ILS">ILS</option>
+            <option value="GBP" selected>GBP</option>
+            <option value="DKK">DKK</option>
+            <option value="CAD">CAD</option>
+            <option value="JPY">JPY</option>
+            <option value="HUF">HUF</option>
+            <option value="RON">RON</option>
+            <option value="MYR">MYR</option>
+            <option value="SEK">SEK</option>
+            <option value="SGD">SGD</option>
+            <option value="HKD">HKD</option>
+            <option value="AUD">AUD</option>
+            <option value="CHF">CHF</option>
+            <option value="KRW">KRW</option>
+            <option value="CNY">CNY</option>
+            <option value="TRY">TRY</option>
+            <option value="HRK">HRK</option>
+            <option value="NZD">NZD</option>
+            <option value="THB">THB</option>
+            <option value="USD">USD</option>
+            <option value="NOK">NOK</option>
+            <option value="RUB">RUB</option>
+            <option value="INR">INR</option>
+            <option value="MXN">MXN</option>
+            <option value="CZK">CZK</option>
+            <option value="BRL">BRL</option>
+            <option value="PLN">PLN</option>
+            <option value="PHP">PHP</option>
+            <option value="ZAR">ZAR</option>
+        </select> 
+        <input type="number" id="amount_from" placeholder="0" value="1">
+    </div>
+
+    <div class="swap_rate_container">
+        <button class="btn" id="swap"> Swap </button>
+        <div class="rate" id="rate"></div>
+    </div>
+
+
+    <div class="currency">
+        <select id="currency_to">
+            <option value="EUR">EUR</option>
+            <option value="IDR">IDR</option>
+            <option value="BGN">BGN</option>
+            <option value="ILS">ILS</option>
+            <option value="GBP">GBP</option>
+            <option value="DKK">DKK</option>
+            <option value="CAD">CAD</option>
+            <option value="JPY">JPY</option>
+            <option value="HUF">HUF</option>
+            <option value="RON">RON</option>
+            <option value="MYR">MYR</option>
+            <option value="SEK">SEK</option>
+            <option value="SGD">SGD</option>
+            <option value="HKD">HKD</option>
+            <option value="AUD">AUD</option>
+            <option value="CHF">CHF</option>
+            <option value="KRW">KRW</option>
+            <option value="CNY">CNY</option>
+            <option value="TRY">TRY</option>
+            <option value="HRK">HRK</option>
+            <option value="NZD">NZD</option>
+            <option value="THB">THB</option>
+            <option value="USD" selected>USD</option>
+            <option value="NOK">NOK</option>
+            <option value="RUB">RUB</option>
+            <option value="INR">INR</option>
+            <option value="MXN">MXN</option>
+            <option value="CZK">CZK</option>
+            <option value="BRL">BRL</option>
+            <option value="PLN">PLN</option>
+            <option value="PHP">PHP</option>
+            <option value="ZAR">ZAR</option>
+        </select> 
+        <input type="number" id="amount_to">
+
+    </div>
+</div>
+{% endblock %}
